@@ -1,0 +1,10 @@
+---
+cidr_block: "{{vpc_ip_base}}.0.0/{{vpc_mask}}"
+vpc_name: "{{host_env}}"
+vpc_tags:
+  Name: "{{host_env}}"
+  env: "{{host_env}}"
+  region: "{{aws_region}}"
+tenancy: default #default|dedicated
+dns_hostname: true
+dns_support: true

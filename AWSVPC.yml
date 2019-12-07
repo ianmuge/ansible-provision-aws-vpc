@@ -1,0 +1,30 @@
+---
+- name: VPC Scripts
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars_prompt:
+    - name: "host_env"
+      prompt: "Host Environment?"
+      private: no
+  vars:
+    vpc_ip_base: "10.10"
+    vpc_mask: "16"
+    aws_region: "{{ lookup('env','AWS_REGION')|default('eu-west-2') }}"
+  pre_tasks:
+    - name: get dhcp options set
+      ec2_vpc_dhcp_option_info:
+      register: dhcp_info
+    - debug: var=dhcp_info.dhcp_options[0].dhcp_options_id
+    - name: get public IP
+      ipify_facts:
+      register: public_ip
+    - debug: var=public_ip
+  roles:
+    - AWSVPC
+    - AWSInternetGateway
+    - AWSRoutingTable
+    - AWSSubnet
+    - AWSSecurityGroup
+  post_tasks:
+

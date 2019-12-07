@@ -1,0 +1,12 @@
+---
+- name: create security Group
+  ec2_group:
+    vpc_id: "{{vpc.vpc.id}}"
+    name: "{{Name}}"
+    description: "{{description}}"
+    purge_rules: "{{purge_rules}}"
+    rules: "{{rules}}"
+    state: "present"
+    tags: "{{group_tag}}"
+  register: sec_group
+- debug: var=sec_group

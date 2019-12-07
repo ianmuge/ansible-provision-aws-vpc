@@ -1,0 +1,7 @@
+---
+Name: "{{host_env}}-IGW"
+igw_tags:
+  Name: "{{Name}}"
+  env: "{{host_env}}"
+  region: "{{aws_region}}"
+  vpc: "{{vpc.vpc.id}}"

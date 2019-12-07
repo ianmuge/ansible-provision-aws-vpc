@@ -1,0 +1,10 @@
+---
+- name: Create Internet Gateway
+  ec2_vpc_igw:
+    vpc_id: "{{vpc.vpc.id}}"
+    state: "present"
+    region: "{{aws_region}}"
+    tags: "{{igw_tags}}"
+  register: igw
+- name: get IGW id
+  debug: var=igw

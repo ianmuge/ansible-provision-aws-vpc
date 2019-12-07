@@ -1,0 +1,36 @@
+---
+Name: "default"
+description: "Default VPC security group"
+purge_rules: yes
+group_tag:
+  Name: "{{host_env}}-{{Name}}"
+  env: "{{host_env}}"
+  region: "{{aws_region}}"
+  vpc: "{{vpc.vpc.id}}"
+rules:
+  - proto: "tcp"
+    ports:
+      - 80 #http
+      - 443 #https
+    cidr_ip:
+      - "0.0.0.0/0"
+    rule_desc: "public-{{host_env}}-{{Name}}"
+  - proto: "tcp"
+    ports:
+      - 3306 #MySQL
+      - 6379 #Redis
+      - 2049 #NFS
+      - 9200 #elasticsearch
+      - 5601 #kibana
+    cidr_ip:
+      - "{{vpc_ip_base}}.0.0/{{vpc_mask}}"
+    rule_desc: "private-{{host_env}}-{{Name}}"
+  - proto: "tcp"
+    ports:
+      - 22 #ssh
+      - 3389 #rdp
+    cidr_ip:
+      - "{{public_ip.ansible_facts.ipify_public_ip}}/32"
+    rule_desc: "secure-{{host_env}}-{{Name}}"
+
+

@@ -1,0 +1,13 @@
+---
+Name: "{{host_env}}-RTB"
+purge_routes: yes
+purge_tags: yes
+routes:
+  - dest: "{{vpc_ip_base}}.0.0/{{vpc_mask}}"
+  - dest: "0.0.0.0/0"
+    gateway_id: "{{gateway_id}}"
+rtb_tags:
+  Name: "{{host_env}}-RTB"
+  env: "{{host_env}}"
+  region: "{{aws_region}}"
+  vpc: "{{vpc.vpc.id}}"

@@ -1,0 +1,13 @@
+---
+- name: create subnets
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{vpc.vpc.id}}"
+    az: "{{item.az}}"
+    cidr: "{{item.cidr}}"
+    map_public: "{{item.map_public}}"
+    tags: "{{item.tags}}"
+    wait: "{{item.wait}}"
+  loop: "{{subnets}}"
+  register: vpc_subnet
+- debug: var=vpc_subnet
