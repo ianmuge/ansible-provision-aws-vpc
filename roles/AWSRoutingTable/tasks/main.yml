@@ -17,13 +17,24 @@
       set_fact:
         gateway_id: "{{igw.internet_gateways[0].internet_gateway_id}}"
   when: igw is not defined
+- name: Lookup route tables
+  ec2_vpc_route_table_info:
+    region: "{{aws_region}}"
+    filters:
+      vpc-id: "{{vpc.vpc.id}}"
+  register: vpc_route_tables
 - name: create routing table
   ec2_vpc_route_table:
+    route_table_id: "{{ vpc_route_tables.route_tables[0].id }}"
+    lookup: id
     vpc_id: "{{vpc.vpc.id}}"
     state: "present"
     tags: "{{rtb_tags}}"
     purge_routes: "{{purge_routes}}"
     purge_tags: "{{purge_tags}}"
-    routes: "{{routes}}"
+    routes:
+      - dest: "{{vpc_ip_base}}.0.0/{{vpc_mask}}"
+      - dest: "0.0.0.0/0"
+        gateway_id: "{{ gateway_id }}"
   register: rtb
 - debug: var=rtb

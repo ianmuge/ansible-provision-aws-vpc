@@ -1,13 +1,37 @@
 ---
-- name: create subnets
+- name: create public subnets
   ec2_vpc_subnet:
     state: present
     vpc_id: "{{vpc.vpc.id}}"
-    az: "{{item.az}}"
-    cidr: "{{item.cidr}}"
-    map_public: "{{item.map_public}}"
-    tags: "{{item.tags}}"
-    wait: "{{item.wait}}"
-  loop: "{{subnets}}"
-  register: vpc_subnet
-- debug: var=vpc_subnet
+    az: "{{aws_region}}{{item}}"
+    cidr: "{{vpc_ip_base}}.{{ansible_loop.index0*vpc_increment}}.0/{{subnet_mask}}"
+    map_public: yes
+    tags:
+      Name: "{{host_env}}_public_{{item}}"
+      env: "{{host_env}}"
+      section: "public"
+      zone: "{{aws_region}}{{item}}"
+    wait: yes
+  loop: "{{availability_zones}}"
+  loop_control:
+    extended: yes
+  register: public_vpc_subnet
+- name: create private subnets
+  ec2_vpc_subnet:
+    state: present
+    vpc_id: "{{vpc.vpc.id}}"
+    az: "{{aws_region}}{{item}}"
+    cidr: "{{vpc_ip_base}}.{{(3+ansible_loop.index0)*vpc_increment}}.0/{{subnet_mask}}"
+    map_public: no
+    tags:
+      Name: "{{host_env}}_private_{{item}}"
+      env: "{{host_env}}"
+      section: "private"
+      zone: "{{aws_region}}{{item}}"
+    wait: yes
+  loop: "{{availability_zones}}"
+  loop_control:
+    extended: yes
+  register: private_vpc_subnet
+- debug: var=public_vpc_subnet
+- debug: var=private_vpc_subnet

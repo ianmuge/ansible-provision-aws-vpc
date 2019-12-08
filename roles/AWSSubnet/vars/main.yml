@@ -1,64 +1,7 @@
 ---
 vpc_increment: 16
 subnet_mask: 20
-subnets:
-  - name: "{{host_env}}_public_a"
-    az: "{{aws_region}}a"
-    tags:
-      Name: "{{host_env}}_public_a"
-      env: "{{host_env}}"
-      section: "public"
-      zone: "{{aws_region}}a"
-    cidr: "{{vpc_ip_base}}.{{0*vpc_increment}}.0/{{subnet_mask}}"
-    map_public: yes
-    wait: yes
-  - name: "{{host_env}}_public_b"
-    az: "{{aws_region}}b"
-    tags:
-      Name: "{{host_env}}_public_b"
-      env: "{{host_env}}"
-      section: "public"
-      zone: "{{aws_region}}b"
-    cidr: "{{vpc_ip_base}}.{{1*vpc_increment}}.0/{{subnet_mask}}"
-    map_public: yes
-    wait: yes
-  - name: "{{host_env}}_public_c"
-    az: "{{aws_region}}c"
-    tags:
-      Name: "{{host_env}}_public_c"
-      env: "{{host_env}}"
-      section: "public"
-      zone: "{{aws_region}}c"
-    cidr: "{{vpc_ip_base}}.{{2*vpc_increment}}.0/{{subnet_mask}}"
-    map_public: yes
-    wait: yes
-  - name: "{{host_env}}_private_a"
-    az: "{{aws_region}}a"
-    tags:
-      Name: "{{host_env}}_private_a"
-      env: "{{host_env}}"
-      section: "private"
-      zone: "{{aws_region}}a"
-    cidr: "{{vpc_ip_base}}.{{3*vpc_increment}}.0/{{subnet_mask}}"
-    map_public: no
-    wait: yes
-  - name: "{{host_env}}_private_b"
-    az: "{{aws_region}}b"
-    tags:
-      Name: "{{host_env}}_private_b"
-      env: "{{host_env}}"
-      section: "private"
-      zone: "{{aws_region}}b"
-    cidr: "{{vpc_ip_base}}.{{4*vpc_increment}}.0/{{subnet_mask}}"
-    map_public: no
-    wait: yes
-  - name: "{{host_env}}_private_c"
-    az: "{{aws_region}}c"
-    tags:
-      Name: "{{host_env}}_private_c"
-      env: "{{host_env}}"
-      section: "private"
-      zone: "{{aws_region}}c"
-    cidr: "{{vpc_ip_base}}.{{5*vpc_increment}}.0/{{subnet_mask}}"
-    map_public: no
-    wait: yes
+availability_zones:
+  - "a"
+  - "b"
+  - "c"
